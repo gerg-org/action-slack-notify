@@ -1,0 +1,25 @@
+name: "build-docker-image"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-image:
+    runs-on: 
+    - self-hosted
+    - retort-runner
+    steps:
+    - name: checkout latest release
+      uses: actions/checkout@v2
+
+    - name: Docker login to GitHub Packages
+      env:
+        DOCKER_USERNAME: ${{ github.actor }}
+        DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      run: docker login ghcr.io -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+    - name: Docker build
+      run: docker build -t ghcr.io/gerg-org/action-slack-notify .
+
+    - name: Push image to GitHub Packages
+      run: docker push ghcr.io/gerg-org/action-slack-notify
