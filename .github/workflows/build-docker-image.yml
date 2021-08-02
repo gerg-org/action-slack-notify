@@ -5,9 +5,7 @@ on:
 
 jobs:
   build-image:
-    runs-on: 
-    - self-hosted
-    - retort-runner
+    runs-on: ubuntu-latest
     steps:
     - name: checkout latest release
       uses: actions/checkout@v2
